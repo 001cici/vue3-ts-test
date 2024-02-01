@@ -1,6 +1,6 @@
 import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig, loadEnv, ConfigEnv, UserConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 // API自动引入插件
@@ -29,17 +29,17 @@ import presetAttributify from '@unocss/preset-attributify'
 import transformerDirective from '@unocss/transformer-directives'
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const viteEnv = loadEnv(mode, './')
 
   return {
     base: viteEnv.VITE_BASE,
     server: {
       host: '0.0.0.0',
-      port: '8080',
+      port: 8080,
       open: true,
       // 端口占用直接退出
-      scriptPort: true
+      strictPort: false
       // 本地服务 CORS 是否开启
       // cors: true,
       // proxy: {
@@ -72,6 +72,15 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       vue(),
+      // 使用Unocss
+      Unocss({
+        // 预设
+        presets: [presetUno(), presetAttributify()],
+        // 指令转换插件
+        transformers: [transformerDirective()],
+        // 自定义规则
+        rules: []
+      }),
       AutoImport({
         // 需要去解析的文件
         include: [
@@ -112,15 +121,6 @@ export default defineConfig(({ mode }) => {
             customCollections: ['user', 'home']
           })
         ]
-      }),
-      // 使用Unocss
-      Unocss({
-        // 预设
-        presets: [presetUno(), presetAttributify()],
-        // 指令转换插件
-        transformers: [transformerDirective()],
-        // 自定义规则
-        rules: []
       }),
       Icons({
         compiler: 'vue3',

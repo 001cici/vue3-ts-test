@@ -1,11 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
+// 导入菜单路由
+import { menuRouter } from './menuRouter'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'Layout',
+      name: 'SwitchLayout',
       component: () => import('@/layout/SwitchIndex.vue'),
       redirect: '/',
       children: [
@@ -16,17 +18,10 @@ const router = createRouter({
             title: 'TOOLSDOG'
           },
           component: () => import('@/views/HomePage.vue')
-        }
+        },
+        ...menuRouter
       ]
     }
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue')
-    // }
   ]
 })
 

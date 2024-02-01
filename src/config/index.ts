@@ -1,12 +1,12 @@
 // 获取环境变量
-const ENV = import.meta.ENV
+const ENV = import.meta.env
 // 配置文件
 let config = {}
 // 默认配置文件
 const configSource = {
   appCode: ENV.VITE_APP_CODE,
   // 项目标识代码
-  projectCode: `${ENV.VITE_APP_CODE}_${ENV.VITE_APP_CODE}`,
+  projectCode: `${ENV.VITE_APP_CODE}_${ENV.VITE_APP_ENV}`,
   // 项目名
   projectName: ENV.VITE_APP_NAME,
   // 项目描述
@@ -18,7 +18,16 @@ const configSource = {
   // 模拟数据接口路径
   mockBaseUrl: ENV.VITE_BASE_MOCK_URL,
   // 服务端接口路径
-  serverUrl: ENV.VITE_BASE_SERVER_URL
+  serverUrl: ENV.VITE_BASE_SERVER_URL,
+  // GitHub地址
+  github: 'https://github.com/001cici/vue3-ts-test',
+  // 备案号
+  icp: '京ICP备2022xxxxxxx号',
+  // 个人配置
+  me: {
+    name: 'cici',
+    github: 'https://github.com/001cici'
+  }
 }
 
 const setConfig = cfg => {
@@ -51,7 +60,7 @@ const getConfig = key => {
   if (Array.isArray(key)) {
     const data = config
     if (key && key.length > 1) {
-      let res = {}
+      const res = {}
       key.forEach(v => {
         if (data && typeof data[v] !== 'undefined') {
           res[v] = data[v]
